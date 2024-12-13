@@ -28,4 +28,8 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
             @Param("startAt") LocalDateTime startAt,
             @Param("endAt") LocalDateTime endAt
     );
+
+    //user 와 item 함께 조회
+    @Query("SELECT r FROM Reservation r JOIN FETCH r.user JOIN FETCH r.item")
+    List<Reservation> findAllWithUserAndItem();
 }
