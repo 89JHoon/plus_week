@@ -1,5 +1,6 @@
 package com.example.demo.dto;
 
+import com.example.demo.entity.ReservationState;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -11,6 +12,7 @@ public class ReservationResponseDto {
     private String itemName;
     private LocalDateTime startAt;
     private LocalDateTime endAt;
+    private ReservationState state;
 
     public ReservationResponseDto(Long id, String nickname, String itemName, LocalDateTime startAt, LocalDateTime endAt) {
         this.id = id;
@@ -18,5 +20,8 @@ public class ReservationResponseDto {
         this.itemName = itemName;
         this.startAt = startAt;
         this.endAt = endAt;
+    }
+
+    public ReservationResponseDto(String s, ReservationState updateState) {
     }
 }

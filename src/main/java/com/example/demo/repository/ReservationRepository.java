@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ReservationRepository extends JpaRepository<Reservation, Long> {
+public interface ReservationRepository extends JpaRepository<Reservation, Long>  {
 
     List<Reservation> findByUserIdAndItemId(Long userId, Long itemId);
 
@@ -22,7 +22,8 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     @Query("SELECT r FROM Reservation r " +
             "WHERE r.item.id = :id " +
             "AND NOT (r.endAt <= :startAt OR r.startAt >= :endAt) " +
-            "AND r.status = 'APPROVED'")
+            "AND r.status = com.example.demo.entity.ReservationState.APPROVED")
+    
     List<Reservation> findConflictingReservations(
             @Param("id") Long id,
             @Param("startAt") LocalDateTime startAt,
@@ -32,4 +33,12 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     //user 와 item 함께 조회
     @Query("SELECT r FROM Reservation r JOIN FETCH r.user JOIN FETCH r.item")
     List<Reservation> findAllWithUserAndItem();
+
+
+    default Reservation findReservationById(Long id){
+        return findById(id).orElseThrow(()-> new IllegalArgumentException("id에 맞는 데이터가 없습니다."));
+    }
+
+
+
 }
