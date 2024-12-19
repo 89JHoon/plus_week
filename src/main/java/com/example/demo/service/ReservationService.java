@@ -31,6 +31,8 @@ public class ReservationService {
         this.rentalLogService = rentalLogService;
     }
 
+
+
     // TODO: 1. 트랜잭션 이해
     @Transactional
     public void createReservation(Long itemId, Long userId, LocalDateTime startAt, LocalDateTime endAt) {
@@ -70,25 +72,24 @@ public class ReservationService {
     }
 
     // TODO: 5. QueryDSL 검색 개선
+
     public List<ReservationResponseDto> searchAndConvertReservations(Long userId, Long itemId) {
-
-        List<Reservation> reservations = searchReservations(userId, itemId);
-
+        List<Reservation> reservations = reservationRepository.searchReservations(userId, itemId);
         return convertToDto(reservations);
     }
 
-    public List<Reservation> searchReservations(Long userId, Long itemId) {
-
-        if (userId != null && itemId != null) {
-            return reservationRepository.findByUserIdAndItemId(userId, itemId);
-        } else if (userId != null) {
-            return reservationRepository.findByUserId(userId);
-        } else if (itemId != null) {
-            return reservationRepository.findByItemId(itemId);
-        } else {
-            return reservationRepository.findAll();
-        }
-    }
+//    public List<Reservation> searchReservations(Long userId, Long itemId) {
+//
+//        if (userId != null && itemId != null) {
+//            return reservationRepository.findByUserIdAndItemId(userId, itemId);
+//        } else if (userId != null) {
+//            return reservationRepository.findByUserId(userId);
+//        } else if (itemId != null) {
+//            return reservationRepository.findByItemId(itemId);
+//        } else {
+//            return reservationRepository.findAll();
+//        }
+//    }
 
     private List<ReservationResponseDto> convertToDto(List<Reservation> reservations) {
         return reservations.stream()

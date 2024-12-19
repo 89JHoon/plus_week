@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ReservationRepository extends JpaRepository<Reservation, Long>  {
+public interface ReservationRepository extends JpaRepository<Reservation, Long>,ReservationRepositoryCustom  {
 
     List<Reservation> findByUserIdAndItemId(Long userId, Long itemId);
 
@@ -23,7 +23,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
             "WHERE r.item.id = :id " +
             "AND NOT (r.endAt <= :startAt OR r.startAt >= :endAt) " +
             "AND r.status = com.example.demo.entity.ReservationState.APPROVED")
-    
+
     List<Reservation> findConflictingReservations(
             @Param("id") Long id,
             @Param("startAt") LocalDateTime startAt,
@@ -38,6 +38,8 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     default Reservation findReservationById(Long id){
         return findById(id).orElseThrow(()-> new IllegalArgumentException("id에 맞는 데이터가 없습니다."));
     }
+
+    List<Reservation> searchReservations(Long userId, Long itemId);
 
 
 
